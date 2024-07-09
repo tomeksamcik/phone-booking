@@ -5,7 +5,7 @@ import org.example.model.Booking;
 import org.example.exceptions.PhoneNotFoundException;
 import org.example.services.BookingService;
 import org.example.services.PhoneService;
-import org.example.exceptions.NoBookingException;
+import org.example.exceptions.BookingNotFoundException;
 import org.example.exceptions.PhoneAlreadyBookedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +40,9 @@ public class BookingController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> cancelBooking(@PathVariable final Integer id) throws NoBookingException {
+    public ResponseEntity<String> cancelBooking(@PathVariable final Integer id) throws BookingNotFoundException {
         var booking = bookingService.findById(id)
-                .orElseThrow(() -> new NoBookingException(String.format("No booking found for the given id: %d", id)));
+                .orElseThrow(() -> new BookingNotFoundException(String.format("No booking found for the given id: %d", id)));
         bookingService.cancel(booking);
 
         return ResponseEntity.ok().build();

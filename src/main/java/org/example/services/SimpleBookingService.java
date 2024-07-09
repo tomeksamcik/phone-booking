@@ -2,7 +2,7 @@ package org.example.services;
 
 import lombok.RequiredArgsConstructor;
 import org.example.model.Booking;
-import org.example.exceptions.NoBookingException;
+import org.example.exceptions.BookingNotFoundException;
 import org.example.exceptions.PhoneAlreadyBookedException;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +33,14 @@ public class SimpleBookingService implements BookingService {
     }
 
     @Override
-    public void cancel(final Booking booking) throws NoBookingException {
+    public void cancel(final Booking booking) throws BookingNotFoundException {
         /*
         Since only phone is used for comparing bookings, bookings.contains(booking) would ignore a user
          */
         if (bookings.stream().filter(b -> b.isFor(booking.getPhone(), booking.getUser())).findAny().isPresent()) {
             bookings.remove(booking);
         } else {
-            throw new NoBookingException(String.format("No booking to cancel found (booking: %s)", booking));
+            throw new BookingNotFoundException(String.format("No booking to cancel found (booking: %s)", booking));
         }
     }
 

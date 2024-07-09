@@ -4,7 +4,7 @@ import org.assertj.core.util.Sets;
 import org.example.model.Booking;
 import org.example.model.Phone;
 import org.example.model.User;
-import org.example.exceptions.NoBookingException;
+import org.example.exceptions.BookingNotFoundException;
 import org.example.exceptions.PhoneAlreadyBookedException;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +59,7 @@ public class SimpleBookingServiceTest {
     }
 
     @Test
-    void shouldCancelBooking() throws NoBookingException, PhoneAlreadyBookedException {
+    void shouldCancelBooking() throws BookingNotFoundException, PhoneAlreadyBookedException {
         var phone = phoneService.findById(1).get();
         var user = User.builder().firstName("Test").lastName("User").build();
         var booking = Booking.builder().phone(phone).user(user).build();
@@ -72,7 +72,7 @@ public class SimpleBookingServiceTest {
     }
 
     @Test
-    void shouldNotCancelBookingIfItsForAnotherUser() throws NoBookingException, PhoneAlreadyBookedException {
+    void shouldNotCancelBookingIfItsForAnotherUser() throws BookingNotFoundException, PhoneAlreadyBookedException {
         var phone = phoneService.findById(1).get();
         var user = User.builder().firstName("Test").lastName("User").build();
         var anotherUser = User.builder().firstName("Another").lastName("User").build();
@@ -81,7 +81,7 @@ public class SimpleBookingServiceTest {
 
         bookingService.create(bookingForUser);
 
-        assertThrows(NoBookingException.class, () ->
+        assertThrows(BookingNotFoundException.class, () ->
                 bookingService.cancel(bookingForAnotherUser));
     }
 
@@ -90,7 +90,7 @@ public class SimpleBookingServiceTest {
         var phone = phoneService.findById(1).get();
         var booking = Booking.builder().phone(phone).build();
 
-        assertThrows(NoBookingException.class, () ->
+        assertThrows(BookingNotFoundException.class, () ->
                 bookingService.cancel(booking));
     }
 }

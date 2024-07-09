@@ -5,11 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-class ExceptionHandler {
+class CustomExceptionHandler {
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Error> handleMethodArgumentNotValidException(final MethodArgumentNotValidException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -18,7 +19,7 @@ class ExceptionHandler {
                         .build());
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler({PhoneAlreadyBookedException.class, NoBookingException.class, PhoneNotFoundException.class})
+    @ExceptionHandler({PhoneAlreadyBookedException.class, BookingNotFoundException.class, PhoneNotFoundException.class})
     public ResponseEntity<Error> handleMultipleExceptions(final Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
