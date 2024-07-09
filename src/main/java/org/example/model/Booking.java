@@ -20,6 +20,9 @@ public class Booking {
     Getters are needed for serialization/deserialization
      */
 
+    @EqualsAndHashCode.Exclude
+    private final Integer id;
+
     @Valid
     @NotNull
     private final Phone phone;
@@ -34,5 +37,9 @@ public class Booking {
 
     public boolean isFor(final Phone phone, final User user) {
         return this.phone.equals(phone) && this.user.equals(user);
+    }
+
+    public boolean equalsId(final Integer id) {
+        return this.id.equals(id);
     }
 }

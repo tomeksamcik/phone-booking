@@ -1,7 +1,7 @@
 package org.example.rest;
 
 import org.example.model.Phone;
-import org.example.rest.exceptions.PhoneNotFoundException;
+import org.example.exceptions.PhoneNotFoundException;
 import org.example.services.PhoneService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

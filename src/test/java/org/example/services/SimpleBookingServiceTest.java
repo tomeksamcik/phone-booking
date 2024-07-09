@@ -4,8 +4,8 @@ import org.assertj.core.util.Sets;
 import org.example.model.Booking;
 import org.example.model.Phone;
 import org.example.model.User;
-import org.example.services.exceptions.NoBookingException;
-import org.example.services.exceptions.PhoneAlreadyBookedException;
+import org.example.exceptions.NoBookingException;
+import org.example.exceptions.PhoneAlreadyBookedException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
