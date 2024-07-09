@@ -1,4 +1,4 @@
-package org.example.rest.exceptions;
+package org.example.exceptions;
 
 public class PhoneNotFoundException extends Exception {
 

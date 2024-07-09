@@ -56,7 +56,7 @@ mvn spring-boot:run
 < Content-Type: application/json
 < Transfer-Encoding: chunked
 < Date: Tue, 09 Jul 2024 10:20:09 GMT
-{"phone":{"id":4,"name":"Motorola Nexus 6"},"user":{"firstName":"test","lastName":"test"},"createdAt":"2024-07-09T12:20:09.548093"}
+{"id":1,"phone":{"id":4,"name":"Motorola Nexus 6"},"user":{"firstName":"test","lastName":"test"},"createdAt":"2024-07-09T15:59:31.067927"}
 ```
 ### Getting bookings
 ```
@@ -71,30 +71,20 @@ mvn spring-boot:run
 < Content-Type: application/json
 < Transfer-Encoding: chunked
 < Date: Tue, 09 Jul 2024 10:20:14 GMT
-[{"phone":{"id":1,"name":"Samsung Galaxy S9"},"user":{"firstName":"test","lastName":"test"},"createdAt":"2024-07-09T12:19:54.17755"},{"phone":{"id":4,"name":"Motorola Nexus 6"},"user":{"firstName":"test","lastName":"test"},"createdAt":"2024-07-09T12:20:09.548093"}]
+[{"id":1,"phone":{"id":4,"name":"Motorola Nexus 6"},"user":{"firstName":"test","lastName":"test"},"createdAt":"2024-07-09T15:59:31.067927"}]
 ```
 ### Canceling a booking
 ```
-> DELETE /bookings HTTP/1.1
+> DELETE /bookings/1 HTTP/1.1
 > Host: localhost:8080
 > Content-Type: application/json
 > User-Agent: insomnia/9.3.2
 > Accept: */*
-> Content-Length: 87
-
-| {
-| 	"phone": {
-| 		"id": 4
-| 	},
-| 	"user": {
-| 		"firstName": "test",
-| 		"lastName": "test"
-| 	}
-| }
+> Content-Length: 0
 
 * Mark bundle as not supporting multiuse
 
 < HTTP/1.1 200 
 < Content-Length: 0
-< Date: Tue, 09 Jul 2024 10:19:03 GMT
+< Date: Tue, 09 Jul 2024 14:00:05 GMT
 ```

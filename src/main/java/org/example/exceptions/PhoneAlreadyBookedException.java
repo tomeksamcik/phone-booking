@@ -1,4 +1,4 @@
-package org.example.services.exceptions;
+package org.example.exceptions;
 
 public class PhoneAlreadyBookedException extends Exception {
 

@@ -1,8 +1,6 @@
-package org.example.rest.exceptions;
+package org.example.exceptions;
 
 import org.example.model.Error;
-import org.example.services.exceptions.NoBookingException;
-import org.example.services.exceptions.PhoneAlreadyBookedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

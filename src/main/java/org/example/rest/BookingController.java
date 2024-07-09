@@ -2,22 +2,17 @@ package org.example.rest;
 
 import jakarta.validation.Valid;
 import org.example.model.Booking;
-import org.example.rest.exceptions.PhoneNotFoundException;
+import org.example.exceptions.PhoneNotFoundException;
 import org.example.services.BookingService;
 import org.example.services.PhoneService;
-import org.example.services.exceptions.NoBookingException;
-import org.example.services.exceptions.PhoneAlreadyBookedException;
+import org.example.exceptions.NoBookingException;
+import org.example.exceptions.PhoneAlreadyBookedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-/*
-TODO:
-- Write unit tests for controllers
-- Write readme
- */
 @RestController
 @RequestMapping("bookings")
 public class BookingController {
@@ -44,8 +39,10 @@ public class BookingController {
         return bookingService.create(booking.toBuilder().phone(phone).build());
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> cancelBooking(@Valid @RequestBody final Booking booking) throws NoBookingException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> cancelBooking(@PathVariable final Integer id) throws NoBookingException {
+        var booking = bookingService.findById(id)
+                .orElseThrow(() -> new NoBookingException(String.format("No booking found for the given id: %d", id)));
         bookingService.cancel(booking);
 
         return ResponseEntity.ok().build();

@@ -3,11 +3,11 @@ package org.example.rest;
 import org.example.model.Booking;
 import org.example.model.Phone;
 import org.example.model.User;
-import org.example.rest.exceptions.PhoneNotFoundException;
+import org.example.exceptions.PhoneNotFoundException;
 import org.example.services.BookingService;
 import org.example.services.PhoneService;
-import org.example.services.exceptions.NoBookingException;
-import org.example.services.exceptions.PhoneAlreadyBookedException;
+import org.example.exceptions.NoBookingException;
+import org.example.exceptions.PhoneAlreadyBookedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -98,18 +98,19 @@ public class BookingControllerTest {
         var phone = Phone.builder().id(1).name("Test phone").build();
         var booking = Booking.builder().phone(phone).build();
 
-        bookingController.cancelBooking(booking);
+        when(bookingService.findById(1)).thenReturn(Optional.of(booking));
+
+        bookingController.cancelBooking(1);
 
         verify(bookingService, times(1)).cancel(eq(booking));
     }
 
     @Test
     void shouldNotCancelNonExistingBooking() throws NoBookingException {
-        var phone = Phone.builder().id(1).name("Test phone").build();
-        var booking = Booking.builder().phone(phone).build();
+        when(bookingService.findById(1)).thenReturn(Optional.empty());
 
-        doThrow(new NoBookingException("No such booking")).when(bookingService).cancel(eq(booking));
+        verify(bookingService, never()).cancel(any());
 
-        assertThrows(NoBookingException.class, () -> bookingController.cancelBooking(booking));
+        assertThrows(NoBookingException.class, () -> bookingController.cancelBooking(1));
     }
 }

@@ -2,7 +2,7 @@ package org.example.rest;
 
 import lombok.AllArgsConstructor;
 import org.example.model.Phone;
-import org.example.rest.exceptions.PhoneNotFoundException;
+import org.example.exceptions.PhoneNotFoundException;
 import org.example.services.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
