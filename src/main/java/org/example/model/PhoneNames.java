@@ -13,7 +13,7 @@ public enum PhoneNames {
 
     public final String label;
 
-    PhoneNames(String label) {
+    PhoneNames(final String label) {
         this.label = label;
     }
 }

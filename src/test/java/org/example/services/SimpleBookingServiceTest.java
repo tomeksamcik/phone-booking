@@ -16,60 +16,77 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SimpleBookingServiceTest {
 
-    private final Set<Phone> phones = Set.of(Phone.builder().id(1).name(SAMSUNG_GALAXY_S9.label).build(),
-            Phone.builder().id(2).name(SAMSUNG_GALAXY_S8.label).build(),
-            Phone.builder().id(3).name(SAMSUNG_GALAXY_S8.label).build(),
-            Phone.builder().id(4).name(MOTOROLA_NEXUS_6.label).build(),
-            Phone.builder().id(5).name(ONEPLUS_9.label).build(),
-            Phone.builder().id(6).name(IPHONE_11.label).build(),
-            Phone.builder().id(7).name(IPHONE_12.label).build(),
-            Phone.builder().id(8).name(IPHONE_13.label).build(),
-            Phone.builder().id(9).name(IPHONE_X.label).build(),
-            Phone.builder().id(10).name(NOKIA_3310.label).build());
+    private final Set<Phone> phones =
+            Set.of(Phone.builder().id(1).name(SAMSUNG_GALAXY_S9.label).build(),
+                    Phone.builder().id(2).name(SAMSUNG_GALAXY_S8.label).build(),
+                    Phone.builder().id(3).name(SAMSUNG_GALAXY_S8.label).build(),
+                    Phone.builder().id(4).name(MOTOROLA_NEXUS_6.label).build(),
+                    Phone.builder().id(5).name(ONEPLUS_9.label).build(),
+                    Phone.builder().id(6).name(IPHONE_11.label).build(),
+                    Phone.builder().id(7).name(IPHONE_12.label).build(),
+                    Phone.builder().id(8).name(IPHONE_13.label).build(),
+                    Phone.builder().id(9).name(IPHONE_X.label).build(),
+                    Phone.builder().id(10).name(NOKIA_3310.label).build());
 
     private final BookingService bookingService = new SimpleBookingService(Sets.newHashSet());
 
     private final PhoneService phoneService = new SimplePhoneService(phones);
 
     @Test
-    void shouldBookPhone() throws PhoneAlreadyBookedException {
+    void shouldCreateBooking() throws PhoneAlreadyBookedException {
         var phone = phoneService.findById(2).get();
-        var anotherPhone = phoneService.findById(3).get();
         var user = User.builder().firstName("Test").lastName("User").build();
+        var booking = Booking.builder().phone(phone).user(user).build();
 
-        bookingService.book(phone, user);
-        var booking = bookingService.findBooking(phone);
+        bookingService.create(booking);
+        var all = bookingService.findAll();
 
-        assertThat(booking).isPresent();
-        assertThat(booking.get().isFor(phone)).isTrue();
-        assertThat(booking.get().isFor(anotherPhone)).isFalse();
+        assertThat(all).contains(booking);
     }
 
     @Test
-    void shouldThrowAnExceptionWhenBookingTheSamePhoneTwice() throws PhoneAlreadyBookedException {
+    void shouldNotCreateBookingWhenCreatingBookingForTheSamePhoneTwice() throws PhoneAlreadyBookedException {
         var phone = phoneService.findById(1).get();
         var user = User.builder().firstName("Test").lastName("User").build();
+        var otherUser = User.builder().firstName("Another").lastName("User").build();
+        var bookingForUser = Booking.builder().phone(phone).user(user).build();
+        var bookingForAnotherUser = Booking.builder().phone(phone).user(otherUser).build();
 
-        bookingService.book(phone, user);
+        bookingService.create(bookingForUser);
 
         assertThrows(PhoneAlreadyBookedException.class, () ->
-                bookingService.book(phone, user));
+                bookingService.create(bookingForAnotherUser));
     }
 
     @Test
-    void shouldCancelBookedPhone() throws NoBookingException, PhoneAlreadyBookedException {
+    void shouldCancelBooking() throws NoBookingException, PhoneAlreadyBookedException {
         var phone = phoneService.findById(1).get();
         var user = User.builder().firstName("Test").lastName("User").build();
+        var booking = Booking.builder().phone(phone).user(user).build();
 
-        var booking = bookingService.book(phone, user);
-        bookingService.cancel(booking);
-        var found = bookingService.findBooking(phone);
+        var created = bookingService.create(booking);
+        bookingService.cancel(created);
+        var all = bookingService.findAll();
 
-        assertThat(found).isEmpty();
+        assertThat(all).doesNotContain(booking);
     }
 
     @Test
-    void shouldThrowAnExceptionWhenCancelingNonExistingBooking() {
+    void shouldNotCancelBookingIfItsForAnotherUser() throws NoBookingException, PhoneAlreadyBookedException {
+        var phone = phoneService.findById(1).get();
+        var user = User.builder().firstName("Test").lastName("User").build();
+        var anotherUser = User.builder().firstName("Another").lastName("User").build();
+        var bookingForUser = Booking.builder().phone(phone).user(user).build();
+        var bookingForAnotherUser = Booking.builder().phone(phone).user(anotherUser).build();
+
+        bookingService.create(bookingForUser);
+
+        assertThrows(NoBookingException.class, () ->
+                bookingService.cancel(bookingForAnotherUser));
+    }
+
+    @Test
+    void shouldNotCancelBookingWhenCancelingNonExistingBooking() {
         var phone = phoneService.findById(1).get();
         var booking = Booking.builder().phone(phone).build();
 

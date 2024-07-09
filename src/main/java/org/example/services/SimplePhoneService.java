@@ -12,7 +12,12 @@ public class SimplePhoneService implements PhoneService {
     private final Set<Phone> phones;
 
     @Override
-    public Optional<Phone> findById(Integer id) {
+    public Optional<Phone> findById(final Integer id) {
         return phones.stream().filter(p -> p.equalsId(id)).findFirst();
+    }
+
+    @Override
+    public Set<Phone> findAll() {
+        return phones;
     }
 }
