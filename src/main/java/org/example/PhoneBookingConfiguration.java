@@ -26,5 +26,4 @@ public class PhoneBookingConfiguration {
                 Phone.builder().id(9).name(IPHONE_X.label).build(),
                 Phone.builder().id(10).name(NOKIA_3310.label).build()));
     }
-
 }
