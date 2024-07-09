@@ -6,7 +6,7 @@ import org.example.model.User;
 import org.example.exceptions.PhoneNotFoundException;
 import org.example.services.BookingService;
 import org.example.services.PhoneService;
-import org.example.exceptions.NoBookingException;
+import org.example.exceptions.BookingNotFoundException;
 import org.example.exceptions.PhoneAlreadyBookedException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,7 +94,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    void shouldCancelBooking() throws NoBookingException {
+    void shouldCancelBooking() throws BookingNotFoundException {
         var phone = Phone.builder().id(1).name("Test phone").build();
         var booking = Booking.builder().phone(phone).build();
 
@@ -106,11 +106,11 @@ public class BookingControllerTest {
     }
 
     @Test
-    void shouldNotCancelNonExistingBooking() throws NoBookingException {
+    void shouldNotCancelNonExistingBooking() throws BookingNotFoundException {
         when(bookingService.findById(1)).thenReturn(Optional.empty());
 
-        verify(bookingService, never()).cancel(any());
+        assertThrows(BookingNotFoundException.class, () -> bookingController.cancelBooking(1));
 
-        assertThrows(NoBookingException.class, () -> bookingController.cancelBooking(1));
+        verify(bookingService, never()).cancel(any());
     }
 }
