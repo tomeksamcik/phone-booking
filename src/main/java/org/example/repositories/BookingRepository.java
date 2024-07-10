@@ -1,7 +1,5 @@
 package org.example.repositories;
 
-import org.example.exceptions.BookingNotFoundException;
-import org.example.exceptions.PhoneAlreadyBookedException;
 import org.example.model.Booking;
 import org.example.model.Phone;
 import org.example.model.User;
@@ -17,7 +15,9 @@ public interface BookingRepository {
 
     Set<Booking> findAll();
 
-    Booking add(Booking booking) throws PhoneAlreadyBookedException;
+    boolean add(Booking booking);
 
-    void remove(Booking booking) throws BookingNotFoundException;
+    void remove(Booking booking);
+
+    Integer getNextSequenceId();
 }
