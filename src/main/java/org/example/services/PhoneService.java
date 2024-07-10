@@ -1,13 +1,24 @@
 package org.example.services;
 
+import lombok.RequiredArgsConstructor;
 import org.example.model.Phone;
+import org.example.repositories.PhoneRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
 
-public interface PhoneService {
+@Service
+@RequiredArgsConstructor
+public class PhoneService {
 
-    Optional<Phone> findById(Integer id);
+    private final PhoneRepository phoneRepository;
 
-    Set<Phone> findAll();
+    public Optional<Phone> findById(final Integer id) {
+        return phoneRepository.findById(id);
+    }
+
+    public Set<Phone> findAll() {
+        return phoneRepository.findAll();
+    }
 }

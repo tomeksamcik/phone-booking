@@ -1,11 +1,15 @@
 package org.example.services;
 
 import org.assertj.core.util.Sets;
+import org.example.exceptions.BookingNotFoundException;
+import org.example.exceptions.PhoneAlreadyBookedException;
 import org.example.model.Booking;
 import org.example.model.Phone;
 import org.example.model.User;
-import org.example.exceptions.BookingNotFoundException;
-import org.example.exceptions.PhoneAlreadyBookedException;
+import org.example.repositories.BookingRepository;
+import org.example.repositories.PhoneRepository;
+import org.example.repositories.SimpleBookingRepository;
+import org.example.repositories.SimplePhoneRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -14,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.model.PhoneNames.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SimpleBookingServiceTest {
+public class BookingServiceTest {
 
     private final Set<Phone> phones =
             Set.of(Phone.builder().id(1).name(SAMSUNG_GALAXY_S9.label).build(),
@@ -28,9 +32,13 @@ public class SimpleBookingServiceTest {
                     Phone.builder().id(9).name(IPHONE_X.label).build(),
                     Phone.builder().id(10).name(NOKIA_3310.label).build());
 
-    private final BookingService bookingService = new SimpleBookingService(Sets.newHashSet());
+    private final BookingRepository bookingRepository = new SimpleBookingRepository(Sets.newHashSet());
 
-    private final PhoneService phoneService = new SimplePhoneService(phones);
+    private final PhoneRepository phoneRepository = new SimplePhoneRepository(phones);
+
+    private final BookingService bookingService = new BookingService(bookingRepository);
+
+    private final PhoneService phoneService = new PhoneService(phoneRepository);
 
     @Test
     void shouldCreateBooking() throws PhoneAlreadyBookedException {

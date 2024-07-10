@@ -1,19 +1,34 @@
 package org.example.services;
 
-import org.example.model.Booking;
+import lombok.RequiredArgsConstructor;
 import org.example.exceptions.BookingNotFoundException;
 import org.example.exceptions.PhoneAlreadyBookedException;
+import org.example.model.Booking;
+import org.example.repositories.BookingRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
 
-public interface BookingService {
+@Service
+@RequiredArgsConstructor
+public class BookingService {
 
-    Booking create(Booking booking) throws PhoneAlreadyBookedException;
+    private final BookingRepository bookingRepository;
 
-    void cancel(Booking booking) throws BookingNotFoundException;
+    public Booking create(final Booking booking) throws PhoneAlreadyBookedException {
+        return bookingRepository.add(booking);
+    }
 
-    Optional<Booking> findById(Integer id);
+    public void cancel(final Booking booking) throws BookingNotFoundException {
+        bookingRepository.remove(booking);
+    }
 
-    Set<Booking> findAll();
+    public Optional<Booking> findById(Integer id) {
+        return bookingRepository.findById(id);
+    }
+
+    public Set<Booking> findAll() {
+        return bookingRepository.findAll();
+    }
 }

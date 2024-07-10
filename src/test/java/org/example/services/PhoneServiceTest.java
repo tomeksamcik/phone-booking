@@ -1,6 +1,8 @@
 package org.example.services;
 
 import org.example.model.Phone;
+import org.example.repositories.PhoneRepository;
+import org.example.repositories.SimplePhoneRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -10,7 +12,7 @@ import static org.example.model.PhoneNames.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SimplePhoneServiceTest {
+public class PhoneServiceTest {
 
     private final Set<Phone> phones =
             Set.of(Phone.builder().id(1).name(SAMSUNG_GALAXY_S9.label).build(),
@@ -24,7 +26,9 @@ public class SimplePhoneServiceTest {
                     Phone.builder().id(9).name(IPHONE_X.label).build(),
                     Phone.builder().id(10).name(NOKIA_3310.label).build());
 
-    private final PhoneService phoneService = new SimplePhoneService(phones);
+    private final PhoneRepository phoneRepository = new SimplePhoneRepository(phones);
+
+    private final PhoneService phoneService = new PhoneService(phoneRepository);
 
     @Test
     void shouldFindPhoneById() {

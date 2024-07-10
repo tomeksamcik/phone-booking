@@ -1,8 +1,8 @@
 package org.example;
 
 import org.example.model.Phone;
-import org.example.services.PhoneService;
-import org.example.services.SimplePhoneService;
+import org.example.repositories.PhoneRepository;
+import org.example.repositories.SimplePhoneRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +14,8 @@ import static org.example.model.PhoneNames.*;
 public class PhoneBookingConfiguration {
 
     @Bean
-    public PhoneService init() {
-        return new SimplePhoneService(Set.of(Phone.builder().id(1).name(SAMSUNG_GALAXY_S9.label).build(),
+    public PhoneRepository init() {
+        return new SimplePhoneRepository(Set.of(Phone.builder().id(1).name(SAMSUNG_GALAXY_S9.label).build(),
                 Phone.builder().id(2).name(SAMSUNG_GALAXY_S8.label).build(),
                 Phone.builder().id(3).name(SAMSUNG_GALAXY_S8.label).build(),
                 Phone.builder().id(4).name(MOTOROLA_NEXUS_6.label).build(),
